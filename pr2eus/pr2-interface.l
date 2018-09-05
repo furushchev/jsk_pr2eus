@@ -236,8 +236,11 @@
                          (send-all clients :get-result)))
                (mapcar #'(lambda (ac)
                            (send ac :spin-once)
-                           (eq (send ac :get-state)
-                               actionlib_msgs::GoalStatus::*ACTIVE*))
+                           (not (null
+                                 (memq (send ac :get-state)
+                                       (list actionlib_msgs::GoalStatus::*PENDING*
+                                             actionlib_msgs::GoalStatus::*ACTIVE*
+                                             actionlib_msgs::GoalStatus::*SUCCEEDED*)))))
                        clients)))
      (case arm (:arms result) (t (car result)))
      ))
