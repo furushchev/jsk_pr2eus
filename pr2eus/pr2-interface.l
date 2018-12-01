@@ -430,7 +430,8 @@ Example: (send self :gripper :rarm :position) => 0.00"
 
 (defmethod pr2-interface
   (:angle-vector-with-constraint
-   (av1 &optional (tm 3000) (arm :arms) &key (rotation-axis t) (translation-axis t) &rest args)
+    (av1 &optional (tm 3000) (arm :arms) (initial-av nil)
+         &key (rotation-axis t) (translation-axis t) &rest args)
    (let (av0 c0 c1 avs tms ret arm-av pav)
      (setq pav (send robot :angle-vector))
      (unless (memq arm '(:larm :rarm :arms))
@@ -442,7 +443,9 @@ Example: (send self :gripper :rarm :position) => 0.00"
            (t
             (setq c1 (cons (send robot :larm :end-coords :copy-worldcoords)
                            (send robot :rarm :end-coords :copy-worldcoords)))))
-     (setq av0 (send robot :angle-vector (send self :state :reference-vector)))
+     (if initial-av
+         (setq av0 (send robot :angle-vector initial-av))
+       (setq av0 (send robot :angle-vector (send self :state :reference-vector))))
      (cond ((memq arm '(:larm :rarm))
             (setq c0 (send robot arm :end-coords :copy-worldcoords))
             (setq arm-av (send robot arm :angle-vector)))
