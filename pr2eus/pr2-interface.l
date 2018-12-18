@@ -644,7 +644,7 @@ Example: (send self :gripper :rarm :position) => 0.00"
     )
   )
 
-(defun check-tuckarm-pose (&key (thre 20) &rest args)
+(defun check-tuckarm-pose (&key (thre 20) &rest args &allow-other-keys)
   (send *pr2* :angle-vector (send *ri* :state :potentio-vector))
   (let ((l-angle (map float-vector #'(lambda(d)(- d (* 360 (round (/ d 360.0)))))
                       (send *pr2* :larm :angle-vector)))
