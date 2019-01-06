@@ -60,7 +60,7 @@
                   (send msg :status :goal_id :id))
          (setq time-to-finish (send (ros::time- finish-time current-time) :to-sec))
        (progn
-         (ros::ros-warn "[~A] feedback-cb ~A received wrong goal" ros::name-space msg)
+         ;; (ros::ros-warn "[~A] feedback-cb ~A received wrong goal" ros::name-space msg)
          (setq time-to-finish 0.0)))
      ))
   ;; method for simulation-modep
